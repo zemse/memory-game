@@ -9,37 +9,37 @@ var updater = true;
 
 function correctSound() {
   var correctS = new Audio('sounds/correct.mp3');
-  correctS.play();
+  currentLevel>0 ? correctS.play() : 0;
 }
 
 function beepSound() {
   var beep = new Audio('sounds/beep.mp3');
-  beep.play();
+  currentLevel>0 ? beep.play() : 0;
 }
 
 function blueSound() {
   var blueS = new Audio('sounds/blue.mp3');
-  blueS.play();
+  currentLevel>0 ? blueS.play() : 0;
 }
 
 function greenSound() {
   var greenS = new Audio('sounds/green.mp3');
-  greenS.play();
+  currentLevel>0 ? greenS.play() : 0;
 }
 
 function redSound() {
   var redS = new Audio('sounds/red.mp3');
-  redS.play();
+  currentLevel>0 ? redS.play() : 0;
 }
 
 function wrongSound() {
   var wrongS = new Audio('sounds/wrong.mp3');
-  wrongS.play();
+  currentLevel>0 ? wrongS.play() : 0;
 }
 
 function yellowSound() {
   var yellowS = new Audio('sounds/yellow.mp3');
-  yellowS.play();
+  currentLevel>0 ? yellowS.play() : 0;
 }
 
 function updateTitle() {
@@ -92,6 +92,15 @@ function startGame() {
   updater = false; //stop the recursive function from updating
   setTimeout(displayNextColor, 1000);
 }
+
+//caching the sound files to avoid sound lang
+beepSound();
+blueSound();
+correctSound();
+greenSound();
+redSound();
+wrongSound();
+yellowSound();
 
 //executing the title updater recursive function
 updateTitle();
