@@ -7,6 +7,7 @@ var newColor;
 var highestLevel = 0;
 var updater = true;
 
+/*
 function correctSound() {
   var correctS = new Audio('sounds/correct.mp3');
   currentLevel>0 ? correctS.play() : 0;
@@ -41,6 +42,7 @@ function yellowSound() {
   var yellowS = new Audio('sounds/yellow.mp3');
   currentLevel>0 ? yellowS.play() : 0;
 }
+*/
 
 function updateTitle() {
   setTimeout(function() {
@@ -60,12 +62,12 @@ function nextSequence() {
   return ['green', 'red', 'yellow', 'blue'][Math.floor(Math.random() * 4)];
 }
 
-function colorToSound(id) {
+/*function colorToSound(id) {
   id === 'green' ? greenSound() :
     id === 'red' ? redSound() :
     id === 'yellow' ? yellowSound() :
     id === 'blue' ? blueSound() : 0;
-}
+}*/
 
 function flash(id) {
   $('#' + id).addClass('pressed');
@@ -83,7 +85,7 @@ function levelUp() {
 
 function displayNextColor() {
   newColor = computerSequence[computerSequence.push(nextSequence()) - 1];
-  colorToSound(newColor);
+  //colorToSound(newColor);
   flash(newColor);
 }
 
@@ -93,14 +95,14 @@ function startGame() {
   setTimeout(displayNextColor, 1000);
 }
 
-//caching the sound files to avoid sound lang
-beepSound();
+//caching the sound files to avoid sound lag
+/*beepSound();
 blueSound();
 correctSound();
 greenSound();
 redSound();
 wrongSound();
-yellowSound();
+yellowSound();*/
 
 //executing the title updater recursive function
 updateTitle();
@@ -117,7 +119,7 @@ $('.btn').click(function(event) {
     startGame(); //start the game
   }
   else { //if game is already started
-    computerSequence[index] === event.currentTarget.id ? colorToSound(event.currentTarget.id) : wrongSound();
+    //computerSequence[index] === event.currentTarget.id ? colorToSound(event.currentTarget.id) : wrongSound();
     flash(event.currentTarget.id);
 
     if (!(computerSequence[index] === event.currentTarget.id)) { //wrong answer game over
@@ -139,7 +141,7 @@ $('.btn').click(function(event) {
       //level up and display next color
       setTimeout(function() {
         levelUp();
-        correctSound();
+        //correctSound();
         setTimeout(displayNextColor, 1500);
         index = 0;
       }, 1000);
