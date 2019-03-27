@@ -1,11 +1,58 @@
 $('.btn').css('height', $('.btn').css('width'));
 
-var currentLevel = 0;
-var computerSequence = [];
-var index = 0;
-var newColor;
-var highestLevel = 0;
-var updater = true;
+let currentLevel = 0;
+let computerSequence = [];
+let index = 0;
+let newColor;
+let highestLevel = 0;
+let updater = true;
+
+//executing the title updater recursive function
+updateTitle();
+
+//initiate the game on keyboard key press just in case
+$(document).keypress(event => {
+  if (currentLevel === 0) {
+    startGame();
+  }
+});
+
+$('.btn').click(event => {
+  if (currentLevel === 0) { //if game is not started
+    startGame(); //start the game
+  }
+  else { //if game is already started
+    //computerSequence[index] === event.currentTarget.id ? colorToSound(event.currentTarget.id) : wrongSound();
+    flash(event.currentTarget.id);
+
+    if (!(computerSequence[index] === event.currentTarget.id)) { //wrong answer game over
+      if (highestLevel < currentLevel) {
+        highestLevel = currentLevel;
+      }
+      $('body').addClass('game-over');
+      $('#level-title').text('Game Over');
+      setTimeout(() => {
+        currentLevel = 0;
+        computerSequence = [];
+        index = 0;
+        $('body').removeClass('game-over');
+        updater = true;
+        updateTitle();
+      }, 200);
+
+    } else if (!(++index in computerSequence)) { //right answer from previous condition and this condition is about the last key press in every level.
+      //level up and display next color
+      setTimeout(() => {
+        levelUp();
+        //correctSound();
+        setTimeout(displayNextColor, 1500);
+        index = 0;
+      }, 1000);
+    }
+  }
+});
+
+
 
 /*
 function correctSound() {
@@ -45,17 +92,16 @@ function yellowSound() {
 */
 
 function updateTitle() {
-  setTimeout(function() {
+  setInterval(() => {
     if (updater) {
       $('#level-title').text(highestLevel > 0 ? 'Highest: Level ' + highestLevel : 'Welcome to Memory Game');
     }
-    setTimeout(function() {
+    setTimeout(() => {
       if (updater) {
         $('#level-title').text('Press Any Key to Start');
-        updateTitle();
       }
     }, 1000);
-  }, 1000);
+  }, 2000);
 }
 
 function nextSequence() {
@@ -71,14 +117,14 @@ function nextSequence() {
 
 function flash(id) {
   $('#' + id).addClass('pressed');
-  setTimeout(function() {
+  setTimeout(() => {
     $('#' + id).removeClass('pressed');
   }, 150);
 }
 
 function levelUp() {
   $('#level-title').text(currentLevel === 0 ? 'Good luck' : 'Great!');
-  setTimeout(function() {
+  setTimeout(() => {
     $('#level-title').text('Level ' + (++currentLevel));
   }, 1000);
 }
@@ -103,48 +149,3 @@ greenSound();
 redSound();
 wrongSound();
 yellowSound();*/
-
-//executing the title updater recursive function
-updateTitle();
-
-//initiate the game on keyboard key press just in case
-$(document).keypress(function(event) {
-  if (currentLevel === 0) {
-    startGame();
-  }
-});
-
-$('.btn').click(function(event) {
-  if (currentLevel === 0) { //if game is not started
-    startGame(); //start the game
-  }
-  else { //if game is already started
-    //computerSequence[index] === event.currentTarget.id ? colorToSound(event.currentTarget.id) : wrongSound();
-    flash(event.currentTarget.id);
-
-    if (!(computerSequence[index] === event.currentTarget.id)) { //wrong answer game over
-      if (highestLevel < currentLevel) {
-        highestLevel = currentLevel;
-      }
-      $('body').addClass('game-over');
-      $('#level-title').text('Game Over');
-      setTimeout(function() {
-        currentLevel = 0;
-        computerSequence = [];
-        index = 0;
-        $('body').removeClass('game-over');
-        updater = true;
-        updateTitle();
-      }, 200);
-
-    } else if (!(++index in computerSequence)) { //right answer from previous condition and this condition is about the last key press in every level.
-      //level up and display next color
-      setTimeout(function() {
-        levelUp();
-        //correctSound();
-        setTimeout(displayNextColor, 1500);
-        index = 0;
-      }, 1000);
-    }
-  }
-});
